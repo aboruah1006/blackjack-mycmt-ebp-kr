@@ -23,12 +23,16 @@ public class Deck {
     cardValues.add("Q");
     cardValues.add("K");
 
+    prepareCardsForEachSuite(cardValues);
+    Collections.shuffle(cards);
+  }
+
+  private void prepareCardsForEachSuite(List<String> cardValues) {
     for (Suit suit : Suit.values()) {
       for (String cardValue : cardValues) {
         cards.add(new Card(suit, cardValue));
       }
     }
-    Collections.shuffle(cards);
   }
 
   public int size() {
