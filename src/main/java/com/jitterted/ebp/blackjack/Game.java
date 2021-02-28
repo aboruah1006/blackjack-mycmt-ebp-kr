@@ -82,10 +82,10 @@ public class Game {
     while (!playerBusted) {
       displayGameState();
       String playerChoice = inputFromPlayer().toLowerCase();
-      if (playerChoice.startsWith("s")) {
+      if (playerStops(playerChoice)) {
         break;
       }
-      if (playerChoice.startsWith("h")) {
+      if (playerHits(playerChoice)) {
         drawCardIntoPlayerHand();
         playerBusted = playerHand.isBusted();
       } else {
@@ -103,6 +103,14 @@ public class Game {
     handleGameOutcome();
   }
 
+  private boolean playerHits(String playerChoice) {
+    return playerChoice.startsWith("h");
+  }
+
+  private boolean playerStops(String playerChoice) {
+    return playerChoice.startsWith("s");
+  }
+
   private void dealerPlays() {
     while (dealerHand.value() <= 16) {
       drawCardIntoDealerHand();
@@ -110,16 +118,21 @@ public class Game {
   }
 
   private void handleGameOutcome() {
+    GameOutcome gameOutcome = getGameOutcome();
+    System.out.println(gameOutcome.getMessage());
+  }
+
+  private GameOutcome getGameOutcome() {
     if (playerHand.isBusted()) {
-      System.out.println("You Busted, so you lose.  💸");
+      return GameOutcome.PLAYER_BUSTED;
     } else if (dealerHand.isBusted()) {
-      System.out.println("Dealer went BUST, Player wins! Yay for you!! 💵");
+      return GameOutcome.DEALER_BUSTED;
     } else if (playerHand.beats(dealerHand)) {
-      System.out.println("You beat the Dealer! 💵");
+      return GameOutcome.PLAYER_BEATS_DEALER;
     } else if (playerHand.pushesWith(dealerHand)) {
-      System.out.println("Push: The house wins, you Lose. 💸");
+      return GameOutcome.PLAYER_PUSHES;
     } else {
-      System.out.println("You lost to the Dealer. 💸");
+      return GameOutcome.PLAYER_LOSES;
     }
   }
 

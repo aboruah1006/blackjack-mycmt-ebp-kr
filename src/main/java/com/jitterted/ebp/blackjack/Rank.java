@@ -12,13 +12,21 @@ public class Rank {
   }
 
   public int rankValue() {
-    if ("JQK".contains(rank)) {
+    if (isFaceCard()) {
       return 10;
-    } else if (rank.equals("A")) {
+    } else if (isAceCard()) {
       return 1;
     } else {
       return Integer.parseInt(rank);
     }
+  }
+
+  private boolean isAceCard() {
+    return rank.equals("A");
+  }
+
+  private boolean isFaceCard() {
+    return "JQK".contains(rank);
   }
 
   public String display() {
