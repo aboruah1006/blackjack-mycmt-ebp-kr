@@ -1,14 +1,14 @@
 package com.jitterted.ebp.blackjack;
 
-public class PlayerBet {
+class PlayerBet {
     private int betAmount = 0;
+    private int totalBetAmount = 0;
 
-    public PlayerBet(int betAmount) {
-        this.betAmount = betAmount;
-    }
+    public PlayerBet() {}
 
     public void placeBet(int amount) {
         this.betAmount = amount;
+        this.totalBetAmount += amount;
     }
     
     public int winAmount() {
@@ -21,5 +21,9 @@ public class PlayerBet {
     
     public int tieAmount() {
         return this.betAmount;
+    }
+
+    public int totalBetAmount () {
+        return this.totalBetAmount;
     }
 }

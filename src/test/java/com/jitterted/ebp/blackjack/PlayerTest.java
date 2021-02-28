@@ -48,4 +48,28 @@ public class PlayerTest {
         player.playerTies();
         assertThat(player.playerBalance()).isEqualTo(100);
     }
+
+    @Test
+    public void playerPlacesMultipleBetsThenTotalBetAmount() {
+        Player player = new Player();
+        player.playerDeposits(100);
+        player.playerBets(50);
+        player.playerTies();
+        player.playerBets(70);
+        player.playerWins();
+        player.playerBets(30);
+        //player.totalAmountBet();
+        assertThat(player.totalAmountBet()).isEqualTo(150);
+    }
+
+    @Test
+    public void playerPlacesBetEqualOrAbove100GetsBonus() {
+        Player player = new Player();
+        player.playerDeposits(200);
+        player.playerBets(50);
+        player.playerTies();
+        player.playerBets(100);
+        player.playerTies();
+        assertThat(player.playerBalance()).isEqualTo(210);
+    }
 }
