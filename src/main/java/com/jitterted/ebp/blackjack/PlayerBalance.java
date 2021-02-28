@@ -18,8 +18,4 @@ public class PlayerBalance {
     public void withdraw(int withDrawAmount) {
         this.playerBalance -= withDrawAmount;
     }
-
-//    public void addAmount(int amount) {
-//        this.playerBalance += amount;
-//    }
 }

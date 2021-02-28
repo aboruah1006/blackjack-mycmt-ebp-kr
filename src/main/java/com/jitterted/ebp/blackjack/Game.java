@@ -9,11 +9,11 @@ import static org.fusesource.jansi.Ansi.ansi;
 public class Game {
 
   private final Deck deck;
+  private final Player player = new Player();
 
   private Hand dealerHand = new Hand();
   private Hand playerHand = new Hand();
-  private PlayerBalance playerBalance = new PlayerBalance(0);
-  private PlayerBet playerBet = new PlayerBet(0);
+  //private PlayerBet playerBet = new PlayerBet(0);
 
   public static void main(String[] args) {
     displayWelcomeScreen();
@@ -197,27 +197,26 @@ public class Game {
   }
 
   public void playerDeposits(int amount) {
-    playerBalance.deposit(amount);
+    player.playerDeposits(amount);
   }
 
   public void playerBets(int betAmount) {
-    playerBet.placeBet(betAmount);
-    playerBalance.withdraw(betAmount);
+    player.playerBets(betAmount);
   }
 
   public int playerBalance() {
-    return playerBalance.getPlayerBalance();
+    return player.playerBalance();
   }
 
   public void playerWins() {
-    playerBalance.deposit(playerBet.winAmount());
+    player.playerWins();
   }
 
   public void playerLoses() {
-    playerBalance.deposit(playerBet.loseAmount());
+    player.playerLoses();
   }
 
   public void playerTies() {
-    playerBalance.deposit(playerBet.tieAmount());
+    player.playerTies();
   }
 }
