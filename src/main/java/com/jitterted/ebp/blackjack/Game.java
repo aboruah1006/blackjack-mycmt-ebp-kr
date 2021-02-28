@@ -13,7 +13,7 @@ public class Game {
   private Hand dealerHand = new Hand();
   private Hand playerHand = new Hand();
   private PlayerBalance playerBalance = new PlayerBalance(0);
-  private int playerBet = 0;
+  private PlayerBet playerBet = new PlayerBet(0);
 
   public static void main(String[] args) {
     displayWelcomeScreen();
@@ -201,7 +201,7 @@ public class Game {
   }
 
   public void playerBets(int betAmount) {
-    playerBet = betAmount;
+    playerBet.placeBet(betAmount);
     playerBalance.withdraw(betAmount);
   }
 
@@ -210,14 +210,14 @@ public class Game {
   }
 
   public void playerWins() {
-    playerBalance.deposit(playerBet * 2);
+    playerBalance.deposit(playerBet.winAmount());
   }
 
   public void playerLoses() {
-    playerBalance.deposit(playerBet * 0);
+    playerBalance.deposit(playerBet.loseAmount());
   }
 
   public void playerTies() {
-    playerBalance.deposit(playerBet * 1);
+    playerBalance.deposit(playerBet.tieAmount());
   }
 }
