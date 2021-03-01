@@ -1,5 +1,7 @@
 package com.jitterted.ebp.blackjack;
 
+import java.util.Scanner;
+
 public class Player {
     //private final Game game;
     private PlayerBalance playerBalance = new PlayerBalance(0);
@@ -43,7 +45,7 @@ public class Player {
     }
 
     private boolean betAmountIsGreaterThanPlayerBalance(int betAmount) {
-        return betAmount >= playerBalance.getPlayerBalance();
+        return betAmount > playerBalance.getPlayerBalance();
     }
 
     private int bonusCalculator(int currentBetAmount) {

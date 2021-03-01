@@ -33,15 +33,30 @@ public class Game {
 
   private static void playGame() {
     Game game = new Game();
-
+    game.takePlayerDeposit(game);
     String input;
     do {
       game.initialDeal();
       game.play();
+      if(game.playerBalanceNil()) {
+        System.out.println("Player ran out of balance. Game over !!");
+        break;
+      }
       System.out.println("Play again? (y/n):");
       Scanner scanner = new Scanner(System.in);
       input = scanner.nextLine();
     } while (input.equalsIgnoreCase("y"));
+  }
+
+  private void takePlayerDeposit(Game game) {
+    boolean invalidInput = true;
+    do {
+      invalidInput = !game.getPlayerDeposit();
+    }while(invalidInput);
+  }
+
+  private boolean playerBalanceNil() {
+    return player.playerBalance() == 0;
   }
 
   private static void resetScreen() {
@@ -77,6 +92,7 @@ public class Game {
   }
 
   public void play() {
+    takePlayerBet();
     // get Player's decision: hit until they stand, then they're done (or they go bust)
     boolean playerBusted = false;
     while (!playerBusted) {
@@ -103,6 +119,14 @@ public class Game {
     handleGameOutcome();
   }
 
+  private void takePlayerBet() {
+    System.out.println("Player balance - " + player.playerBalance());
+    boolean betPlaced = false;
+    do{
+      betPlaced = getPlayerBet();
+    } while(!betPlaced);
+  }
+
   private boolean playerHits(String playerChoice) {
     return playerChoice.startsWith("h");
   }
@@ -123,14 +147,23 @@ public class Game {
   }
 
   private GameOutcome getGameOutcome() {
-    if (playerBusted())
+    if (playerBusted()) {
+      playerLoses();
       return GameOutcome.PLAYER_BUSTED;
-    if (dealerBusted())
+    }
+    if (dealerBusted()) {
+      playerWins();
       return GameOutcome.DEALER_BUSTED;
-    if (playerBeatsDealer())
+    }
+    if (playerBeatsDealer()) {
+      playerWins();
       return GameOutcome.PLAYER_BEATS_DEALER;
-    if (playerPushes())
+    }
+    if (playerPushes()) {
+      playerTies();
       return GameOutcome.PLAYER_PUSHES;
+    }
+    playerLoses();
     return GameOutcome.PLAYER_LOSES;
   }
 
@@ -148,12 +181,6 @@ public class Game {
 
   private boolean playerBusted() {
     return playerHand.isBusted();
-  }
-
-  private String inputFromPlayer() {
-    System.out.println("[H]it or [S]tand?");
-    Scanner scanner = new Scanner(System.in);
-    return scanner.nextLine();
   }
 
   private void displayGameState() {
@@ -232,5 +259,34 @@ public class Game {
 
   public void playerTies() {
     player.playerTies();
+  }
+
+  private String inputFromPlayer() {
+    //return player.getPlayerOption();
+    return PlayerInput.getOption();
+  }
+
+  private boolean getPlayerDeposit() {
+    //int depositAmount = player.inputDepositAmount();
+    int depositAmount = PlayerInput.getDepositAmount();
+    try {
+      playerDeposits(depositAmount);
+    } catch (Exception e) {
+      System.out.println("Error setting player deposit. " + e.getMessage());
+      return false;
+    }
+    return true;
+  }
+
+  private boolean getPlayerBet() {
+    //int betAmount = player.inputBetAmount();
+    int betAmount = PlayerInput.getBetAmount();
+    try {
+      playerBets(betAmount);
+    } catch (Exception e) {
+      System.out.println("Error placing player bet. " + e.getMessage());
+      return false;
+    }
+    return true;
   }
 }
