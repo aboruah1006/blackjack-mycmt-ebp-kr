@@ -87,7 +87,7 @@ public class Game {
       }
       if (playerHits(playerChoice)) {
         drawCardIntoPlayerHand();
-        playerBusted = playerHand.isBusted();
+        playerBusted = playerBusted();
       } else {
         System.out.println("You need to [H]it or [S]tand");
       }
@@ -123,17 +123,31 @@ public class Game {
   }
 
   private GameOutcome getGameOutcome() {
-    if (playerHand.isBusted()) {
+    if (playerBusted())
       return GameOutcome.PLAYER_BUSTED;
-    } else if (dealerHand.isBusted()) {
+    if (dealerBusted())
       return GameOutcome.DEALER_BUSTED;
-    } else if (playerHand.beats(dealerHand)) {
+    if (playerBeatsDealer())
       return GameOutcome.PLAYER_BEATS_DEALER;
-    } else if (playerHand.pushesWith(dealerHand)) {
+    if (playerPushes())
       return GameOutcome.PLAYER_PUSHES;
-    } else {
-      return GameOutcome.PLAYER_LOSES;
-    }
+    return GameOutcome.PLAYER_LOSES;
+  }
+
+  private boolean playerPushes() {
+    return playerHand.pushesWith(dealerHand);
+  }
+
+  private boolean playerBeatsDealer() {
+    return playerHand.beats(dealerHand);
+  }
+
+  private boolean dealerBusted() {
+    return dealerHand.isBusted();
+  }
+
+  private boolean playerBusted() {
+    return playerHand.isBusted();
   }
 
   private String inputFromPlayer() {
